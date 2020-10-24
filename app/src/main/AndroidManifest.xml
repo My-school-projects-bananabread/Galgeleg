@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainMenu" />
+        <activity android:name=".Help" />
+        <activity android:name=".Game" />
+
+
     </application>
 
 </manifest>
