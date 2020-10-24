@@ -5,62 +5,128 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
 public class Game extends AppCompatActivity implements View.OnClickListener{
 
-    //keyboard buttons
-    Button  LtrA, LtrB, LtrC, LtrD, LtrE, LtrF, LtrG, LtrH, LtrI, LtrJ,
+    //layout
+    Button  LtrA, LtrB, LtrC, LtrD, LtrE, LtrF, LtrG, LtrH, LtrI, LtrJ, //keyboard buttons
             LtrK, LtrL, LtrM, LtrN, LtrO, LtrP, LtrQ, LtrR, LtrS, LtrT,
             LtrU, LtrV, LtrW, LtrX, LtrY, LtrZ, LtrAE, LtrOE, LtrAA;
-
     Button returnFromGame;
     TextView wordTxtView;
 
+    //game variables
+    String guessWord;
+    String displayedWordString;
+    char[] displayedWordArray;
+    ArrayList<String> wordList;
+    String triedLetters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
 
-        returnFromGame = findViewById(R.id.gameBackBtn);
-        returnFromGame.setText("Return From Game");
-
-        returnFromGame.setOnClickListener(this);
-
         declareButtons();
 
-        wordTxtView = findViewById(R.id.wordTxtView);
+        //setup the game
+        setupGame();
+
+        //random
+        returnFromGame = findViewById(R.id.gameBackBtn);
+        returnFromGame.setText("Return From Game");
+        returnFromGame.setOnClickListener(this);
     }
 
     public void onClick(View v) {
         System.out.println("Der blev trykket på en knap");
         if (v == returnFromGame) {
-
-            wordTxtView.setText("kage");
-
             finish();
-
         }
 
         //clicked a letter on the keyboard
         if (v != returnFromGame){
+
             Button btn = findViewById(v.getId());
             String clickedBtnText = btn.getText().toString();
-            wordTxtView.setText(clickedBtnText);
+            char letter = clickedBtnText.charAt(0);
+
+            int letterPos = 0;
+            for(int i = 0; i < displayedWordArray.length; i++){
+                if(guessWord.charAt(i) == letter) {
+                    displayedWordArray[i] = letter;
+                }
+            }
+
+            displayedWordString = String.valueOf(displayedWordArray);
+            wordTxtView.setText(displayedWordString);
+
             //add some disabling of button thingy
             //just make it :nonactive or something
-
         }
 
     }
 
+    public void setupGame() {
+        //Variables
+        wordList = new ArrayList<String>();
+        wordTxtView = findViewById(R.id.wordTxtView);
 
-        //disable back button on phone
-    @Override
-    public void onBackPressed() {
+        //fill up word list
+        InputStream inputStream = null;
+        Scanner WordScanner = null;
+        String wordtmp;
+
+        try {
+            inputStream = getAssets().open("wordList.txt");
+            WordScanner = new Scanner(inputStream);
+            while(WordScanner.hasNext()){
+                wordtmp = WordScanner.next();
+                wordList.add(wordtmp);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            //Toast.makeText(this, e.getClass().getSimpleName() + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+            if(WordScanner!=null){
+                WordScanner.close();
+            }
+            try {
+                if(inputStream!=null){
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //shuffle, get first word, remove from list
+        Collections.shuffle(wordList);
+        guessWord = wordList.get(0).toUpperCase();
+        wordList.remove(0);
+
+        //display word
+        displayedWordArray = guessWord.toCharArray();
+        Arrays.fill(displayedWordArray, '_');
+
+        displayedWordString = String.valueOf(displayedWordArray);
+        wordTxtView.setText(displayedWordString);
     }
+
+    //disable back button on phone
+    @Override
+    public void onBackPressed() {}
 
     public void declareButtons() {
         if(true){

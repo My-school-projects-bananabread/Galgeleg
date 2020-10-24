@@ -30,8 +30,10 @@
                 android:id="@+id/wordTxtView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.2"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="asdf" />
 
             <Button
                 android:id="@+id/gameBackBtn"
