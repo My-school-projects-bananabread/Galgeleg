@@ -44,10 +44,14 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         }
 
+        //clicked a letter on the keyboard
         if (v != returnFromGame){
             Button btn = findViewById(v.getId());
             String clickedBtnText = btn.getText().toString();
             wordTxtView.setText(clickedBtnText);
+            //add some disabling of button thingy
+            //just make it :nonactive or something
+
         }
 
     }

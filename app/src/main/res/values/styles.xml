@@ -5,12 +5,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="buttonStyle">@style/idk_whatever_fixbuttons</item>
     </style>
 
-    <style name="ApplicationStyle" parent="android:Theme">
-        <item name="android:buttonStyle">"asdf"</item>
-        style="?android:attr/buttonBarButtonStyle"
+    <style name="idk_whatever_fixbuttons" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button</item>
     </style>
-
 </resources>

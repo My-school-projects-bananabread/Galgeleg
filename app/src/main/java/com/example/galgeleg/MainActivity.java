@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 /*Skærme
 
-    Hovedmenu           x
+    Hovedmenu           ✓
     Selve spillet       x
         du har vundet skærmbillede     x
         du har tab skærmbillede        x
