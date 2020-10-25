@@ -9,6 +9,9 @@
     </style>
 
     <style name="idk_whatever_fixbuttons" parent="Widget.AppCompat.Button">
+        <!--
+        <item name="backgroundTint">@drawable/button_disabled</item>
+        -->
         <item name="android:background">@drawable/rounded_button</item>
     </style>
 </resources>
