@@ -2,11 +2,18 @@ package com.example.galgeleg;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
@@ -34,6 +41,8 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
             LtrU, LtrV, LtrW, LtrX, LtrY, LtrZ, LtrAE, LtrOE, LtrAA;
     Button returnFromGame;
     TextView wordTxtView, livesTxtView, scoreTxtView;
+    TextView scoreTitleTxtView, livesTitleTxtView;
+    ImageView hangmanImgView;
 
     //game variables
     String guessWord;
@@ -53,11 +62,6 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         //setup the game
         setupGame();
-
-        //random
-        returnFromGame = findViewById(R.id.gameBackBtn);
-        returnFromGame.setText("Return From Game");
-        returnFromGame.setOnClickListener(this);
     }
 
     public void onClick(View v) {
@@ -67,49 +71,122 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         }
 
         //clicked a letter on the keyboard
-        if (v != returnFromGame){
+        if (v != returnFromGame && v != exitGameBtn && v != againGameBtn){
 
-            //disable button get text
-            boolean guessedAWord = false;
-
-            Button btn = findViewById(v.getId());
+            //disable button and get text
+            Button btn = findViewById(v.getId()); //temp button
             String clickedBtnText = btn.getText().toString();
             char letter = clickedBtnText.charAt(0);
             btn.setEnabled(false);
             btn.setBackgroundColor(555555);
 
-            //show correct letters
-            for(int i = 0; i < guessWord.length(); i++){
-
-            }
-
             //wrong or correct
-            if(guessWord.indexOf(letter) >= 0 ){
+            guessletter(letter);
+            checkGameState();
+        }
+    }
 
-                displayedWordArray[guessWord.indexOf(letter)] = letter;
-                displayedWordString = String.valueOf(displayedWordArray);
-                wordTxtView.setText(displayedWordString);
+    public void guessletter(char letter){
 
-                if(!displayedWordString.contains("_")){
-                    score +=1;
-                    resetGame();
+        //if correct letter
+        if(guessWord.indexOf(letter) >= 0 ){
+            //show correct letters
+            for(int i = 0; i < displayedWordArray.length; i++){
+                if(guessWord.charAt(i) == letter){
+                    displayedWordArray[i] = letter;
                 }
+            }
+            displayedWordString = String.valueOf(displayedWordArray);
+            wordTxtView.setText(displayedWordString);
 
-            } else {
-                lives -= 1;
+            //if all letters guessed
+            if(!displayedWordString.contains("_")){
+                score +=1;
+                resetGame();
+                updateHangmanImage();
             }
-            if (lives < 0){
-                //skal gøre så scoren bliver gemt
-                finish();
-            } else {
-                livesTxtView.setText(String.valueOf(lives));
-            }
+
+        } else {
+            lives -= 1;
+        }
+    }
+
+    public void checkGameState(){
+        if (lives < 0){
+            endgame();
+        } else {
+            livesTxtView.setText(String.valueOf(lives));
+            updateHangmanImage();
+        }
+    }
+
+    public void endgame() {
+        //skal gøre så scoren bliver gemt og vindeskærm/tabeskærm i guess
+        if(lives < 0){
+            System.out.println("BIB BUB SAVING SCORE");
+            disableAllButtons();
+            gameOverDialog();
+        }
+        // you lost part make something :D
+
+        hangmanImgView.setImageResource(R.drawable.dead10);
+        //finish();
+    }
+
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button exitGameBtn, againGameBtn;
+    private TextView popupScoreTxtView;
+    private String yourFinalScoreTxt;
+
+    public void gameOverDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View gameOverPopupView = getLayoutInflater().inflate(R.layout.popup_lose,null);
+
+        exitGameBtn = (Button) gameOverPopupView.findViewById(R.id.exitGameBtn);
+        againGameBtn = (Button) gameOverPopupView.findViewById(R.id.againGameBtn);
+        popupScoreTxtView = (TextView) gameOverPopupView.findViewById(R.id.popupScoreTxtView);
+
+        dialogBuilder.setView(gameOverPopupView);
+        dialog = dialogBuilder.create();
+        if(!dialog.isShowing()){
+            dialog.show();
+            yourFinalScoreTxt = "Score: " + score;
+            popupScoreTxtView.setText(yourFinalScoreTxt);
         }
 
+        againGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                setupGame();
+            }
+        });
+        exitGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
     }
 
     public void setupGame() {
-        //Variables
+        //General stuff, gameBackBtn and score+lives text_fields
+        hangmanImgView= findViewById(R.id.hangmanImgView);
+        hangmanImgView.setImageResource(R.drawable.emptyimg);
+
+        scoreTitleTxtView = findViewById(R.id.scoreTitleTxtView);
+        scoreTitleTxtView.setText("Score:");
+
+        livesTitleTxtView = findViewById(R.id.livesTitleTxtView);
+        livesTitleTxtView.setText("Lives:");
+
+        returnFromGame = findViewById(R.id.gameBackBtn);
+        returnFromGame.setText("x");
+        returnFromGame.setOnClickListener(this);
+
+        //Variables for game mechanics
         wordList = new ArrayList<String>();
         wordTxtView = findViewById(R.id.wordTxtView);
 
@@ -176,9 +253,88 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         scoreTxtView.setText(String.valueOf(score));
     }
 
+    public void updateHangmanImage() {
+        switch(lives) {
+            case 9:
+            case 8:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.stolpesupport1);
+                break;
+            case 7:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.stolpelodret2);
+                break;
+            case 6:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.stolpevandret3);
+                break;
+            case 5:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.stol4);
+                break;
+            case 4:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.rope5);
+                break;
+            case 3:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.legs6);
+                break;
+            case 2:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.body7);
+                break;
+            case 1:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.arms8);
+                break;
+            case 0:
+                // code block
+                hangmanImgView.setImageResource(R.drawable.head9);
+                break;
+            default:
+                break;
+            // code block
+        }
+    }
+
     //disable back button on phone
     @Override
     public void onBackPressed() {}
+
+    public void disableAllButtons(){
+        if(true){
+            LtrA.setEnabled(false);
+            LtrB.setEnabled(false);
+            LtrC.setEnabled(false);
+            LtrD.setEnabled(false);
+            LtrE.setEnabled(false);
+            LtrF.setEnabled(false);
+            LtrG.setEnabled(false);
+            LtrH.setEnabled(false);
+            LtrI.setEnabled(false);
+            LtrJ.setEnabled(false);
+            LtrK.setEnabled(false);
+            LtrL.setEnabled(false);
+            LtrM.setEnabled(false);
+            LtrN.setEnabled(false);
+            LtrO.setEnabled(false);
+            LtrP.setEnabled(false);
+            LtrQ.setEnabled(false);
+            LtrR.setEnabled(false);
+            LtrS.setEnabled(false);
+            LtrT.setEnabled(false);
+            LtrU.setEnabled(false);
+            LtrV.setEnabled(false);
+            LtrW.setEnabled(false);
+            LtrX.setEnabled(false);
+            LtrY.setEnabled(false);
+            LtrZ.setEnabled(false);
+            LtrAE.setEnabled(false);
+            LtrOE.setEnabled(false);
+            LtrAA.setEnabled(false);
+        }
+    }
 
     public void enableAllButtons(){
         if(true){

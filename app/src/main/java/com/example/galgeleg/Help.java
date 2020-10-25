@@ -18,7 +18,7 @@ public class Help extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.help);
 
         backBtn = findViewById(R.id.backBtn);
-        backBtn.setText("Back");
+        backBtn.setText("x");
 
         backBtn.setOnClickListener(this);
     }

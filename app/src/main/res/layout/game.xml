@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     style="@style/idk_whatever_fixbuttons"
     android:background="#424242"
-    tools:context="com.example.galgeleg.Game">
+    tools:context="com.example.galgeleg.Game"
+    android:id="@+id/gameRelative">
 
     <!--  https://stackoverflow.com/questions/16648768/why-buttons-in-button-bars-should-be-borderless-in-android-api-level-15
     har fjernet den der error på buttons, kan være jeg skal kigge på at tilføje det igen eller noget ¯\_(ツ)_/¯  -->
@@ -21,11 +22,72 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <Button
+                android:id="@+id/gameBackBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"/>
+
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="201dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/scoreTitleTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:textColor="#ffffff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/scoreTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:textAlignment="textStart"
+                        android:textColor="#ffffff"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/livesTitleTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:textColor="#ffffff"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/livesTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="textStart"
+                        android:textColor="#ffffff"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <ImageView
+                android:id="@+id/hangmanImgView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
             <TextView
                 android:id="@+id/wordTxtView"
@@ -33,29 +95,8 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.2"
                 android:textAlignment="center"
+                android:textColor="#ffffff"
                 android:textSize="24sp"/>
-
-            <TextView
-                android:id="@+id/scoreTxtView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:letterSpacing="0.2"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/livesTxtView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:letterSpacing="0.2"
-                android:textAlignment="center"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/gameBackBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Go back bitch" />
 
         </LinearLayout>
 
