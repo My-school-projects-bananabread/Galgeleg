@@ -31,6 +31,8 @@ import java.util.Scanner;
     2.b if out of lives show score and correct word, then exit
         2.b.a save score to highscore place somehow
 
+adde så man kan se hvilket ord det var man gættede
+
 */
 
 public class Game extends AppCompatActivity implements View.OnClickListener{
@@ -140,6 +142,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     private String yourFinalScoreTxt;
 
     public void gameOverDialog(){
+        //how to do popup "https://www.youtube.com/watch?v=4GYKOzgQDWI&ab_channel=CodingMark"
         dialogBuilder = new AlertDialog.Builder(this);
         final View gameOverPopupView = getLayoutInflater().inflate(R.layout.popup_lose,null);
 
