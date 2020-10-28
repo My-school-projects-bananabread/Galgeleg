@@ -19,6 +19,8 @@
         <activity android:name=".MainMenu" android:screenOrientation="portrait"/>
         <activity android:name=".Help" android:screenOrientation="portrait"/>
         <activity android:name=".Game" android:screenOrientation="portrait"/>
+        <activity android:name=".HighscoreScreen" android:screenOrientation="portrait"/>
+        <activity android:name=".GameoverScreen" android:screenOrientation="portrait"/>
 
     </application>
 

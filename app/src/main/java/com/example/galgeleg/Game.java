@@ -1,19 +1,14 @@
 package com.example.galgeleg;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
@@ -73,7 +68,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         }
 
         //clicked a letter on the keyboard
-        if (v != returnFromGame && v != exitGameBtn && v != againGameBtn){
+        if (v != returnFromGame /*&& v != exitGameBtn && v != againGameBtn*/){
 
             //disable button and get text
             Button btn = findViewById(v.getId()); //temp button
@@ -127,7 +122,20 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         if(lives < 0){
             System.out.println("BIB BUB SAVING SCORE");
             disableAllButtons();
-            gameOverDialog();
+            saveScore();
+
+            //skift skærm i stedet....
+            Intent i = new Intent(this, GameoverScreen.class);
+            i.putExtra("score", score);
+            i.putExtra("guessWord", guessWord);
+            startActivity(i);
+            finish();
+
+            /*gameOverDialog();
+            Meget sejere om mere logisk måde at gøre det på men skifter activity for at vise det med
+            at flytte data fra en activity til en anden så ignorer den her metode for nu.
+            kan forhåbentlig bruges i stedet til det endelige spil.
+            */
         }
         // you lost part make something :D
 
@@ -135,6 +143,21 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         //finish();
     }
 
+    //save score
+    SharedPreferences prefs;
+    public void saveScore(){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (score > 0) {
+            prefs.edit().putString("myscore", String.valueOf(score)).apply();
+        }
+    }
+
+
+/*
+//really cool popup when you lose but can't use it :(
+
+    //gameoverdialog
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Button exitGameBtn, againGameBtn;
@@ -173,6 +196,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
             }
         });
     }
+     */
 
     public void setupGame() {
         //General stuff, gameBackBtn and score+lives text_fields
@@ -303,7 +327,9 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
     //disable back button on phone
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+        finish();
+    }
 
     public void disableAllButtons(){
         if(true){

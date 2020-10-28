@@ -50,6 +50,21 @@
                 android:textColor="#ffffff"
                 android:textSize="24sp" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/myscoreTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="24sp" />
+        </TableRow>
+
     </LinearLayout>
 
 </RelativeLayout>

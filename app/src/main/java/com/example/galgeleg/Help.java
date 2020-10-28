@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Help extends AppCompatActivity implements View.OnClickListener {
-
     Button backBtn;
 
 
@@ -34,6 +33,7 @@ public class Help extends AppCompatActivity implements View.OnClickListener {
     //disable back button on phone
     @Override
     public void onBackPressed() {
+        finish();
     }
 }
 

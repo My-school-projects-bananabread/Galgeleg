@@ -7,9 +7,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View.OnClickListener;
 
-
-import androidx.appcompat.app.AppCompatActivity;
-
 //to do??? forskellige sprog
 
 public class MainMenu extends AppCompatActivity implements OnClickListener {
@@ -53,7 +50,7 @@ public class MainMenu extends AppCompatActivity implements OnClickListener {
 
         } else if (v == highscoreBtn) {
 
-            Intent i = new Intent(this, Help.class);
+            Intent i = new Intent(this, HighscoreScreen.class);
             startActivity(i);
 
         } else if (v == helpBtn) {
