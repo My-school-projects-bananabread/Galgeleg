@@ -11,7 +11,7 @@ import android.view.View.OnClickListener;
 
 public class MainMenu extends AppCompatActivity implements OnClickListener {
     // Vi erklærer variabler herude så de huskes fra metode til metode
-    Button playBtn, highscoreBtn, settingsBtn, helpBtn;
+    Button playBtn, highscoreBtn, /*settingsBtn,*/ helpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +24,17 @@ public class MainMenu extends AppCompatActivity implements OnClickListener {
         highscoreBtn = findViewById(R.id.highscoreBtn);
         highscoreBtn.setText("Highscore");
 
+        /*
         settingsBtn = findViewById(R.id.settingsBtn);
         settingsBtn.setText("Settings");
+         */
 
         helpBtn = findViewById(R.id.helpBtn);
         helpBtn.setText("Help");
 
         playBtn.setOnClickListener(this);
         highscoreBtn.setOnClickListener(this);
-        settingsBtn.setOnClickListener(this);
+        //settingsBtn.setOnClickListener(this);
         helpBtn.setOnClickListener(this);
     }
 
@@ -43,12 +45,14 @@ public class MainMenu extends AppCompatActivity implements OnClickListener {
             Intent i = new Intent(this, Game.class);
             startActivity(i);
 
-        } else if (v == settingsBtn) {
+        } /*else if (v == settingsBtn) {
 
             Intent i = new Intent(this, Help.class);
             startActivity(i);
 
-        } else if (v == highscoreBtn) {
+
+
+        } */ else if (v == highscoreBtn) {
 
             Intent i = new Intent(this, HighscoreScreen.class);
             startActivity(i);
