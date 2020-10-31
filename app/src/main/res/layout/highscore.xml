@@ -29,41 +29,19 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Highscore"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="24sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/highscoreTxtView"
+                android:id="@+id/highscoreTxtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:layout_marginBottom="10dp" />
         </TableRow>
 
-        <TableRow
+        <ListView
+            android:id="@+id/highscoreListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/myscoreTxtView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="24sp" />
-        </TableRow>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     style="@style/idk_whatever_fixbuttons"
     android:background="#424242"
-    tools:context="com.example.galgeleg.Game"
+    tools:context="com.s195458.galgeleg.Game"
     android:id="@+id/gameRelative">
 
     <!--  https://stackoverflow.com/questions/16648768/why-buttons-in-button-bars-should-be-borderless-in-android-api-level-15

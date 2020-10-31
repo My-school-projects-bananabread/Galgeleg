@@ -1,4 +1,4 @@
-package com.example.galgeleg;
+package com.s195458.galgeleg;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,10 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View.OnClickListener;
 
-//to do??? forskellige sprog
+import com.s195458.galgeleg.controller.HighscoreController;
+import com.s195458.galgeleg.model.Highscore;
+
+
 
 public class MainMenu extends AppCompatActivity implements OnClickListener {
     // Vi erklærer variabler herude så de huskes fra metode til metode

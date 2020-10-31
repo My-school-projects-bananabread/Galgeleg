@@ -1,4 +1,4 @@
-package com.example.galgeleg;
+package com.s195458.galgeleg;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.s195458.galgeleg.controller.GameController;
+import com.s195458.galgeleg.controller.HighscoreController;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -50,6 +54,9 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     int lives;
     int score;
 
+    HighscoreController hc = new HighscoreController();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         declareButtons();
 
         //setup the game
+        //setupGamev2();
         setupGame();
     }
 
@@ -144,14 +152,12 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     }
 
     //save score
-    SharedPreferences prefs;
     public void saveScore(){
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         if (score > 0) {
-            prefs.edit().putString("myscore", String.valueOf(score)).apply();
+            hc.addhighscore(getApplicationContext(), score);
         }
     }
+
 
 
 /*
@@ -198,9 +204,40 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     }
      */
 
+    public void setupGamev2(){
+        //General stuff, gameBackBtn and score+lives text_fields
+        hangmanImgView = findViewById(R.id.hangmanImgView);
+        hangmanImgView.setImageResource(R.drawable.emptyimg);
+
+        scoreTitleTxtView = findViewById(R.id.scoreTitleTxtView);
+        scoreTitleTxtView.setText("Score:");
+
+        livesTitleTxtView = findViewById(R.id.livesTitleTxtView);
+        livesTitleTxtView.setText("Lives:");
+
+        returnFromGame = findViewById(R.id.gameBackBtn);
+        returnFromGame.setText("x");
+        returnFromGame.setOnClickListener(this);
+
+        //Variables for game mechanics
+        GameController gc = new GameController();
+
+        gc.setupGame();
+
+        livesTxtView = findViewById(R.id.livesTxtView);
+        livesTxtView.setText(String.valueOf(lives));
+        scoreTxtView = findViewById(R.id.scoreTxtView);
+        scoreTxtView.setText(String.valueOf(score));
+
+        //fill up word list
+        InputStream inputStream = null;
+        Scanner WordScanner = null;
+        String wordtmp;
+    }
+
     public void setupGame() {
         //General stuff, gameBackBtn and score+lives text_fields
-        hangmanImgView= findViewById(R.id.hangmanImgView);
+        hangmanImgView = findViewById(R.id.hangmanImgView);
         hangmanImgView.setImageResource(R.drawable.emptyimg);
 
         scoreTitleTxtView = findViewById(R.id.scoreTitleTxtView);
@@ -332,7 +369,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void disableAllButtons(){
-        if(true){
+        if(true) {
             LtrA.setEnabled(false);
             LtrB.setEnabled(false);
             LtrC.setEnabled(false);

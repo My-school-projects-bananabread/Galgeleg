@@ -31,10 +31,11 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/HelpTxt1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="The goal of the game is to guess the right word"
+                android:paddingLeft="20dp"
+                android:paddingEnd="20dp"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="24sp" />
@@ -50,10 +51,11 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/HelpTxt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Press the buttons on the keyboard at the bottom and try to guess as many words as you can"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="24sp" />
@@ -70,10 +72,11 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/HelpTxt3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Good luck and have fun"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="24sp" />

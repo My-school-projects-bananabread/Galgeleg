@@ -1,4 +1,4 @@
-package com.example.galgeleg;
+package com.s195458.galgeleg;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,10 @@ public class GameoverScreen extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameover);
 
-        extra();
+        displayScreenElements();
     }
 
-    public void extra(){
+    public void displayScreenElements(){
         gameoverTxtView = findViewById(R.id.gameoverTxtView);
         correctWordTxtView = findViewById(R.id.correctWordTxtView);
 
