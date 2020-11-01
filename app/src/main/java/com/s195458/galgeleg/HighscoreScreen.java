@@ -59,19 +59,16 @@ public class HighscoreScreen extends AppCompatActivity implements View.OnClickLi
     public void showlistview(){
         highscores = hc.getHighscores(getApplicationContext());
 
-        System.out.println("Content of ArrayList:"+highscores);
-
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, highscores) {
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
                 View view = super.getView(position, cachedView, parent);
 
                 TextView overskrift = view.findViewById(R.id.listeelem_overskrift);
-
-                TextView beskrivelse = view.findViewById(R.id.listeelem_beskrivelse);
                 String tmpscore = Integer.toString(highscores.get(position).getScore());
                 overskrift.setText(tmpscore);
 
+                TextView beskrivelse = view.findViewById(R.id.listeelem_beskrivelse);
                 DateFormat df = new SimpleDateFormat();
                 String tmpdate = df.format(highscores.get(position).getDate());
                 beskrivelse.setText(tmpdate);

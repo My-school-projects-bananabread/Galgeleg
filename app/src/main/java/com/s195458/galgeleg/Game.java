@@ -1,9 +1,7 @@
 package com.s195458.galgeleg;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,15 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.s195458.galgeleg.controller.GameController;
-import com.s195458.galgeleg.controller.HighscoreController;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
 
 
 /* game loop
@@ -29,9 +20,6 @@ import java.util.Scanner;
     2.a if word correct reset game/screen and score += 1, total lives -= 2
     2.b if out of lives show score and correct word, then exit
         2.b.a save score to highscore place somehow
-
-adde så man kan se hvilket ord det var man gættede
-
 */
 
 public class Game extends AppCompatActivity implements View.OnClickListener{
@@ -50,12 +38,10 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     String displayedWordString;
     char[] displayedWordArray;
     ArrayList<String> wordList;
-    String triedLetters;
     int lives;
     int score;
 
-    HighscoreController hc = new HighscoreController();
-
+    GameController gc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +50,11 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         declareButtons();
 
+        gc = new GameController(getApplicationContext());
+
         //setup the game
-        //setupGamev2();
         setupGame();
+        //setupGame();
     }
 
     public void onClick(View v) {
@@ -86,76 +74,40 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
             btn.setBackgroundColor(555555);
 
             //wrong or correct
-            guessletter(letter);
-            checkGameState();
+            guessLetter(letter);
+            checkGameOver();
         }
     }
 
-    public void guessletter(char letter){
-
-        //if correct letter
-        if(guessWord.indexOf(letter) >= 0 ){
-            //show correct letters
-            for(int i = 0; i < displayedWordArray.length; i++){
-                if(guessWord.charAt(i) == letter){
-                    displayedWordArray[i] = letter;
-                }
-            }
-            displayedWordString = String.valueOf(displayedWordArray);
-            wordTxtView.setText(displayedWordString);
-
-            //if all letters guessed
-            if(!displayedWordString.contains("_")){
-                score +=1;
+    public void guessLetter(char letter){
+        if(gc.guessLetter(letter)){
+            wordTxtView.setText(String.valueOf(gc.getDisplayedWordString()));
+            if(gc.wordIsGuessed()){
                 resetGame();
-                updateHangmanImage();
             }
-
-        } else {
-            lives -= 1;
         }
     }
 
-    public void checkGameState(){
-        if (lives < 0){
+    public void checkGameOver(){
+        if(gc.checkGameOver()){
             endgame();
-        } else {
-            livesTxtView.setText(String.valueOf(lives));
+        } else{
+            livesTxtView.setText(String.valueOf(gc.getLives()));
             updateHangmanImage();
         }
     }
 
     public void endgame() {
-        //skal gøre så scoren bliver gemt og vindeskærm/tabeskærm i guess
-        if(lives < 0){
-            System.out.println("BIB BUB SAVING SCORE");
-            disableAllButtons();
-            saveScore();
+        gc.saveScore();
 
-            //skift skærm i stedet....
-            Intent i = new Intent(this, GameoverScreen.class);
-            i.putExtra("score", score);
-            i.putExtra("guessWord", guessWord);
-            startActivity(i);
-            finish();
-
-            /*gameOverDialog();
-            Meget sejere om mere logisk måde at gøre det på men skifter activity for at vise det med
-            at flytte data fra en activity til en anden så ignorer den her metode for nu.
-            kan forhåbentlig bruges i stedet til det endelige spil.
-            */
-        }
-        // you lost part make something :D
-
+        disableAllButtons();
         hangmanImgView.setImageResource(R.drawable.dead10);
-        //finish();
-    }
 
-    //save score
-    public void saveScore(){
-        if (score > 0) {
-            hc.addhighscore(getApplicationContext(), score);
-        }
+        Intent i = new Intent(this, GameoverScreen.class);
+        i.putExtra("score", gc.getScore());
+        i.putExtra("guessWord", gc.getGuessWord());
+        startActivity(i);
+        finish();
     }
 
 
@@ -204,7 +156,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     }
      */
 
-    public void setupGamev2(){
+    public void setupGame(){
         //General stuff, gameBackBtn and score+lives text_fields
         hangmanImgView = findViewById(R.id.hangmanImgView);
         hangmanImgView.setImageResource(R.drawable.emptyimg);
@@ -219,106 +171,33 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         returnFromGame.setText("x");
         returnFromGame.setOnClickListener(this);
 
-        //Variables for game mechanics
-        GameController gc = new GameController();
+        wordTxtView = findViewById(R.id.wordTxtView);
 
         gc.setupGame();
 
         livesTxtView = findViewById(R.id.livesTxtView);
-        livesTxtView.setText(String.valueOf(lives));
+        livesTxtView.setText(String.valueOf(gc.getLives()));
+
         scoreTxtView = findViewById(R.id.scoreTxtView);
-        scoreTxtView.setText(String.valueOf(score));
+        scoreTxtView.setText(String.valueOf(gc.getScore()));
 
-        //fill up word list
-        InputStream inputStream = null;
-        Scanner WordScanner = null;
-        String wordtmp;
-    }
-
-    public void setupGame() {
-        //General stuff, gameBackBtn and score+lives text_fields
-        hangmanImgView = findViewById(R.id.hangmanImgView);
-        hangmanImgView.setImageResource(R.drawable.emptyimg);
-
-        scoreTitleTxtView = findViewById(R.id.scoreTitleTxtView);
-        scoreTitleTxtView.setText("Score:");
-
-        livesTitleTxtView = findViewById(R.id.livesTitleTxtView);
-        livesTitleTxtView.setText("Lives:");
-
-        returnFromGame = findViewById(R.id.gameBackBtn);
-        returnFromGame.setText("x");
-        returnFromGame.setOnClickListener(this);
-
-        //Variables for game mechanics
-        wordList = new ArrayList<String>();
-        wordTxtView = findViewById(R.id.wordTxtView);
-
-        lives = 10;
-        livesTxtView = findViewById(R.id.livesTxtView);
-        livesTxtView.setText(String.valueOf(lives));
-        score = 0;
-        scoreTxtView = findViewById(R.id.scoreTxtView);
-        scoreTxtView.setText(String.valueOf(score));
-
-        //fill up word list
-        InputStream inputStream = null;
-        Scanner WordScanner = null;
-        String wordtmp;
-
-        try {
-            inputStream = getAssets().open("wordList.txt");
-            WordScanner = new Scanner(inputStream);
-            while(WordScanner.hasNext()){
-                wordtmp = WordScanner.next();
-                wordList.add(wordtmp);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            //Toast.makeText(this, e.getClass().getSimpleName() + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-        finally{
-            if(WordScanner!=null){
-                WordScanner.close();
-            }
-            try {
-                if(inputStream!=null){
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //shuffle, get first word, remove from list
-        Collections.shuffle(wordList);
         resetGame();
     }
 
+
     public void resetGame(){
-        guessWord = wordList.get(0).toUpperCase();
-        wordList.remove(0);
+        gc.resetgame();
 
-        //display word
-        displayedWordArray = guessWord.toCharArray();
-        Arrays.fill(displayedWordArray, '_');
-
-        displayedWordString = String.valueOf(displayedWordArray);
-        wordTxtView.setText(displayedWordString);
+        String tmpString = gc.getDisplayedWordString();
+        wordTxtView.setText(tmpString);
         enableAllButtons();
 
-        //score and lives
-        if(score >= 10){
-            lives = 0;
-        } else {
-            lives = 10-score;
-        }
-        livesTxtView.setText(String.valueOf(lives));
-        scoreTxtView.setText(String.valueOf(score));
+        livesTxtView.setText(String.valueOf(gc.getLives()));
+        scoreTxtView.setText(String.valueOf(gc.getScore()));
     }
 
     public void updateHangmanImage() {
-        switch(lives) {
+        switch(gc.getLives()) {
             case 9:
             case 8:
                 // code block

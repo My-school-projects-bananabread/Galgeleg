@@ -11,12 +11,11 @@ public class Hangman {
     private int lives;
     private int score;
 
-    public Hangman(String guessWord, String displayedWordString, char[] displayedWordArray, ArrayList<String> wordList, String triedLetters, int lives, int score) {
+    public Hangman(String guessWord, String displayedWordString, char[] displayedWordArray, ArrayList<String> wordList, int lives, int score) {
         this.guessWord = guessWord;
         this.displayedWordString = displayedWordString;
         this.displayedWordArray = displayedWordArray;
         this.wordList = wordList;
-        this.triedLetters = triedLetters;
         this.lives = lives;
         this.score = score;
     }
@@ -51,14 +50,6 @@ public class Hangman {
 
     public void setWordList(ArrayList<String> wordList) {
         this.wordList = wordList;
-    }
-
-    public String getTriedLetters() {
-        return triedLetters;
-    }
-
-    public void setTriedLetters(String triedLetters) {
-        this.triedLetters = triedLetters;
     }
 
     public int getLives() {
