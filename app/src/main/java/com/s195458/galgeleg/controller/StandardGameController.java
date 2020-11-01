@@ -1,25 +1,20 @@
 package com.s195458.galgeleg.controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
 
-import com.s195458.galgeleg.GameoverScreen;
-import com.s195458.galgeleg.R;
 import com.s195458.galgeleg.model.Hangman;
-import com.s195458.galgeleg.model.Highscore;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Scanner;
 
 
 
-public class GameController {
+public class StandardGameController implements IGameType {
 
     //game variables
     String guessWord;
@@ -36,7 +31,7 @@ public class GameController {
     HighscoreController hc;
     Hangman myhangman;
 
-    public GameController(Context context) {
+    public StandardGameController(Context context) {
         //this.myhangman = myhangman;
         this.context = context;
         this.hc = new HighscoreController();

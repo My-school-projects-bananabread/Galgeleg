@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.s195458.galgeleg.controller.GameController;
+import com.s195458.galgeleg.controller.GameTypes;
+import com.s195458.galgeleg.controller.HangmanFactory;
+import com.s195458.galgeleg.controller.IGameType;
+import com.s195458.galgeleg.controller.StandardGameController;
 
 import java.util.ArrayList;
 
@@ -41,7 +44,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     int lives;
     int score;
 
-    GameController gc;
+    IGameType gc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,8 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         declareButtons();
 
-        gc = new GameController(getApplicationContext());
+        HangmanFactory hf = new HangmanFactory();
+        gc = hf.createGame(getApplicationContext(), GameTypes.Standard);
 
         //setup the game
         setupGame();
