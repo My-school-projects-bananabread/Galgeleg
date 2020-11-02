@@ -138,7 +138,9 @@ public class StandardGameController implements IGameType {
     //save score
     public void saveScore(){
         if (checkGameOver()) {
-            hc.addhighscore(this.context, myhangman.getScore());
+            if (myhangman.getScore() > 0) {
+                hc.addhighscore(this.context, myhangman.getScore());
+            }
         }
     }
 
