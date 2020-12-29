@@ -13,12 +13,11 @@ import java.util.Scanner;
 
 public interface IGameType {
 
-    void setupGame();
+    void setupGame(IThreadCallback callback);
 
     void resetgame();
 
-    //fill up word list
-    void setupWordlist();
+    //fill up word list bye bye
 
     boolean guessLetter(char letter);
 

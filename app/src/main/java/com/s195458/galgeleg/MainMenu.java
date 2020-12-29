@@ -45,8 +45,14 @@ public class MainMenu extends AppCompatActivity implements OnClickListener {
         System.out.println("Der blev trykket på en knap");
         if (v == playBtn) {
 
+            /*
             Intent i = new Intent(this, Game.class);
             startActivity(i);
+            */
+
+            Intent i = new Intent(this, PreGameScreen.class);
+            startActivity(i);
+
 
         } /*else if (v == settingsBtn) {
 

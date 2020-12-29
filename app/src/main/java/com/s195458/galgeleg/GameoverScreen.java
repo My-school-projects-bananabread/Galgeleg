@@ -1,6 +1,7 @@
 package com.s195458.galgeleg;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,10 @@ public class GameoverScreen extends AppCompatActivity implements View.OnClickLis
 
         String guessword = "WORD: " + i.getStringExtra("guessWord");
         correctWordTxtView.setText(guessword);
+
+        //sound effect
+        MediaPlayer mp2 = MediaPlayer.create(this, R.raw.try_again);
+        mp2.start();
     }
 
     public void onClick(View v) {
@@ -49,7 +54,7 @@ public class GameoverScreen extends AppCompatActivity implements View.OnClickLis
             finish();
         }
         if (v == againGameBtn){
-            Intent i = new Intent(this, Game.class);
+            Intent i = new Intent(this, PreGameScreen.class);
             startActivity(i);
             finish();
         }

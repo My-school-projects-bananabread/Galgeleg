@@ -1,13 +1,20 @@
 package com.s195458.galgeleg;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.github.jinatonic.confetti.ConfettiManager;
+import com.github.jinatonic.confetti.CommonConfetti;
 
 import com.s195458.galgeleg.controller.GameTypes;
 import com.s195458.galgeleg.controller.HangmanFactory;
@@ -35,6 +42,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     TextView wordTxtView, livesTxtView, scoreTxtView;
     TextView scoreTitleTxtView, livesTitleTxtView;
     ImageView hangmanImgView;
+    RelativeLayout gameRelative;
 
     //game variables
     String guessWord;
@@ -52,6 +60,11 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.game);
 
         declareButtons();
+
+        //valgte type af ord
+        Intent i = getIntent();
+        String WordsType = i.getStringExtra("WordsType");
+        System.out.println("virker det ???"+WordsType);
 
         HangmanFactory hf = new HangmanFactory();
         gc = hf.createGame(getApplicationContext(), GameTypes.Standard);
@@ -177,19 +190,19 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         wordTxtView = findViewById(R.id.wordTxtView);
 
-        gc.setupGame();
+        gc.setupGame(() -> {
+            livesTxtView = findViewById(R.id.livesTxtView);
+            livesTxtView.setText(String.valueOf(gc.getLives()));
 
-        livesTxtView = findViewById(R.id.livesTxtView);
-        livesTxtView.setText(String.valueOf(gc.getLives()));
+            scoreTxtView = findViewById(R.id.scoreTxtView);
+            scoreTxtView.setText(String.valueOf(gc.getScore()));
 
-        scoreTxtView = findViewById(R.id.scoreTxtView);
-        scoreTxtView.setText(String.valueOf(gc.getScore()));
-
-        resetGame();
+            resetGame();
+        });
     }
 
 
-    public void resetGame(){
+    public void resetGame() {
         gc.resetgame();
 
         String tmpString = gc.getDisplayedWordString();
@@ -198,6 +211,11 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         livesTxtView.setText(String.valueOf(gc.getLives()));
         scoreTxtView.setText(String.valueOf(gc.getScore()));
+
+        if (gc.getScore() > 0){
+            MediaPlayer mp = MediaPlayer.create(this, R.raw.victory);
+            mp.start();
+        }
     }
 
     public void updateHangmanImage() {

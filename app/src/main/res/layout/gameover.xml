@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#424242">
 
     <LinearLayout
@@ -52,6 +53,16 @@
                 android:layout_weight="1"
                 android:text="try again" />
         </LinearLayout>
+
+        <!-- en lottie animation, der kunne sikkert tilføjes mere men går ud fra det her er tilstrækkeligt -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:lottie_fileName="owly.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true" />
     </LinearLayout>
 
 </RelativeLayout>
