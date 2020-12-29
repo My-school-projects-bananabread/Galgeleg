@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public interface IGameType {
 
-    void setupGame(IThreadCallback callback);
+    void setupGame(String WordsType ,IThreadCallback callback);
 
     void resetgame();
 

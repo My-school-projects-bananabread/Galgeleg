@@ -44,6 +44,9 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     ImageView hangmanImgView;
     RelativeLayout gameRelative;
 
+    //
+    boolean loading = true;
+
     //game variables
     String guessWord;
     String displayedWordString;
@@ -64,13 +67,12 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         //valgte type af ord
         Intent i = getIntent();
         String WordsType = i.getStringExtra("WordsType");
-        System.out.println("virker det ???"+WordsType);
 
         HangmanFactory hf = new HangmanFactory();
         gc = hf.createGame(getApplicationContext(), GameTypes.Standard);
 
         //setup the game
-        setupGame();
+        setupGame(WordsType);
         //setupGame();
     }
 
@@ -78,6 +80,10 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
         System.out.println("Der blev trykket på en knap");
         if (v == returnFromGame) {
             finish();
+        }
+
+        if(loading){
+            return;
         }
 
         //clicked a letter on the keyboard
@@ -173,7 +179,9 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
     }
      */
 
-    public void setupGame(){
+    public void setupGame(String WordsType){
+        loading = true;
+
         //General stuff, gameBackBtn and score+lives text_fields
         hangmanImgView = findViewById(R.id.hangmanImgView);
         hangmanImgView.setImageResource(R.drawable.emptyimg);
@@ -190,7 +198,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
 
         wordTxtView = findViewById(R.id.wordTxtView);
 
-        gc.setupGame(() -> {
+        gc.setupGame(WordsType, () -> {
             livesTxtView = findViewById(R.id.livesTxtView);
             livesTxtView.setText(String.valueOf(gc.getLives()));
 
@@ -198,6 +206,7 @@ public class Game extends AppCompatActivity implements View.OnClickListener{
             scoreTxtView.setText(String.valueOf(gc.getScore()));
 
             resetGame();
+            loading = false;
         });
     }
 

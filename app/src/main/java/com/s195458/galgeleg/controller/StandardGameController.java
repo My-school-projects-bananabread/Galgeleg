@@ -50,12 +50,12 @@ public class StandardGameController implements IGameType {
         this.myhangman = new Hangman(guessWord, displayedWordString, displayedWordArray, new ArrayList<String>(), lives, score);
     }
 
-    public void setupGame(IThreadCallback callback){
+    public void setupGame(String WordsType,IThreadCallback callback){
         myhangman.setLives(10);
         myhangman.setScore(0);
 
         //setupWordlist();
-        setupWordlistAsync(callback);
+        setupWordlistAsync(WordsType,callback);
         //String guessWord, String displayedWordString, char[] displayedWordArray, ArrayList<String> wordList, String triedLetters, int lives, int score
     }
 
@@ -81,20 +81,23 @@ public class StandardGameController implements IGameType {
 
     //fill up word list
 
-    public void setupWordlistAsync(IThreadCallback callback) {
+    public void setupWordlistAsync(String WordsType, IThreadCallback callback) {
 
         bgThread.execute(() -> {
-            try {
-                hentOrdFraDr();
-            }catch (Exception e) {
-                local_list();
+            switch (WordsType){
+                 case "Internet":
+                     try {
+                         hentOrdFraDr();
+                     }catch (Exception e) {
+                         local_list();
+                     }
+                     break;
+                default:
+                    local_list();
+                    break;
             }
-
             uiThread.post(callback::callback);
         });
-
-
-
     }
 
     public void local_list(){
@@ -205,8 +208,12 @@ public class StandardGameController implements IGameType {
 
         System.out.println("data = " + data);
         System.out.println("data = " + Arrays.asList(data.split("\\s+")));
-        myhangman.getWordList().addAll(new HashSet<String>(Arrays.asList(data.split(" "))));
-        System.out.println("muligeOrd = " + myhangman.getWordList());
+        ArrayList<String> temp = new ArrayList<>();
+        temp.addAll(new HashSet<String>(Arrays.asList(data.split(" "))));
+        Collections.shuffle(temp);
+        myhangman.setWordList(temp);
+        //myhangman.getWordList().addAll(new HashSet<String>(Arrays.asList(data.split(" "))));
+        //System.out.println("muligeOrd = " + myhangman.getWordList());
     }
 
     public String getGuessWord() {
